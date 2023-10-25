@@ -11,6 +11,7 @@ router.delete("/",userCotroller.deleteAllUser)
 router.get("/:id",userCotroller.getOneUser)
 router.delete("/:id",userCotroller.deleteOneUser)
 router.patch("/:id",userCotroller.updateUser)
+router.post("/login",userCotroller.login)
 
 
 export default router

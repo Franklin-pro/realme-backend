@@ -4,6 +4,7 @@ import User from '../model/user'
 import errorMessage from '../itills/errorMessage'
 import successMessage from '../itills/successMessage'
 import bcrypt from 'bcrypt'
+import  jwt  from 'jsonwebtoken'
 
 class userCotroller{
 static async createUser(req,res){
@@ -66,6 +67,28 @@ static async updateUser(req,res){
     }else{
         return successMessage(res,200,`user updated`,user)
     }
+}
+static async login(req,res){
+    const{email,password}=req.body
+
+    const user = await User.findOne({email})
+    if(!user){
+        return errorMessage(res,201,`invalid email or password`)
+    }else{
+        const comparePassword = bcrypt.compareSync(password,user.password)
+        if(!comparePassword){
+            return errorMessage(res,201,`invalid email or password`)
+        }else{
+         const token = jwt.sign({user:user},process.env.SECRETE_KEY,{expiresIn:"1d"})
+         return res.status(200).json({
+            token:token,
+            data:{
+                user:user
+            }
+        })
+        }
+    }
+
 }
 }
 export default userCotroller
