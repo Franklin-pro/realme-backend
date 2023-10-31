@@ -13,7 +13,7 @@ const verifyAccess = (passrole)=>{
                 const verifyToken = jwt.verify(token,process.env.SECRETE_KEY,{expiresIn:'1d'})
                 const user = verifyToken.user
 
-                if(user !==passrole){
+                if(passrole !== verifyToken.role.user){
                     return errorMessage(res,401,`you don't have access`)
                 }
 
