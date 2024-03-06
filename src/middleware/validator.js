@@ -14,10 +14,10 @@ import errorMessage from "../itills/errorMessage";
     }
     static userAccount(){
         return [
-            check("firstName","plz put your firstName").trim().isAlpha(),
-            check("lastName","plz put your lastName").trim().isAlpha(),
-            check("email","plz put your email").trim().isEmail(),
-            check("password","plz put your password").trim().isStrongPassword(),
+            check("firstName","write your firstName correctly").trim().isAlpha(),
+            check("lastName","write your lastName correctly").trim().isAlpha(),
+            check("email","write your email correctly @gmail.com").trim().isEmail(),
+            check("password","make strong password start with capital letter mix number,letter and symbols").trim().isStrongPassword(),
             
         ]
     }
