@@ -1,5 +1,5 @@
 import express from "express";
-import errorMessage from "../itills/errorMessage";
+import errorMessage from "../itills/errorMessage.js";
 import User from "../model/user.js";
 
 class dataChequer{

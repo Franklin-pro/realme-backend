@@ -1,5 +1,5 @@
 import jwt  from "jsonwebtoken";
-import errorMessage from "../itills/errorMessage";
+import errorMessage from "../itills/errorMessage.js";
 
 const verifyAccess = (passrole)=>{
     return (req,res,next)=>{

@@ -1,7 +1,7 @@
 import express from 'express';
 import Messages from '../model/messages.js';
-import errorMessage from '../itills/errorMessage';
-import successMessage from '../itills/successMessage';
+import errorMessage from '../itills/errorMessage.js';
+import successMessage from '../itills/successMessage.js';
 
 class messageController{
     static async createMessage(req,res){

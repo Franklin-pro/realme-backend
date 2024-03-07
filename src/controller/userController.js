@@ -1,8 +1,8 @@
 import express from 'express'
 import mongoose from 'mongoose'
 import User from '../model/user.js'
-import errorMessage from '../itills/errorMessage'
-import successMessage from '../itills/successMessage'
+import errorMessage from '../itills/errorMessage.js'
+import successMessage from '../itills/successMessage.js'
 import bcrypt from 'bcrypt'
 import  jwt  from 'jsonwebtoken'
 

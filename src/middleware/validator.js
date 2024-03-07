@@ -1,5 +1,5 @@
 import { check,validationResult } from "express-validator";
-import errorMessage from "../itills/errorMessage";
+import errorMessage from "../itills/errorMessage.js";
 
  class Validator{
     static inputValidator(req,res,next){
