@@ -1,6 +1,6 @@
 import express from "express";
-import userRoutes from './userRoutes'
-import messageRoutes from './messageRoutes'
+import userRoutes from './userRoutes.js'
+import messageRoutes from './messageRoutes.js'
 
 const router = express.Router();
 
