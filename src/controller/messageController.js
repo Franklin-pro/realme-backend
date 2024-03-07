@@ -1,5 +1,5 @@
 import express from 'express';
-import Messages from '../model/messages';
+import Messages from '../model/messages.js';
 import errorMessage from '../itills/errorMessage';
 import successMessage from '../itills/successMessage';
 

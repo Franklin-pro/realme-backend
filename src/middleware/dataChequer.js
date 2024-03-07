@@ -1,6 +1,6 @@
 import express from "express";
 import errorMessage from "../itills/errorMessage";
-import User from "../model/user";
+import User from "../model/user.js";
 
 class dataChequer{
 static async inputempty(req,res,next){
