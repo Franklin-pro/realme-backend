@@ -79,7 +79,7 @@ static async login(req,res){
         if(!comparePassword){
             return errorMessage(res,201,`invalid email or password`)
         }else{
-         const token = jwt.sign({user:user},process.env.SECRETE_KEY,{expiresIn:"1d"})
+         const token = jwt.sign({user:user},process.env.SECRET_KEY,{expiresIn:"1d"})
          return res.status(200).json({
             token:token,
             data:{
