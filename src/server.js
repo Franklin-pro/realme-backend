@@ -2,7 +2,7 @@ import express from 'express'
 import mongoose from 'mongoose'
 import bodyParser from 'body-parser'
 import dotenv from 'dotenv'
-import router from './routes/index';
+import router from '../src/routes/index.js'
 import cors from 'cors'
 
 const app = express();
