@@ -1,8 +1,8 @@
 import express from "express";
-import userCotroller from "../controller/userController";
-import dataChequer from "../middleware/dataChequer";
-import Validator from "../middleware/validator";
-import verifyAccess from "../middleware/verifyAccess";
+import userCotroller from "../controller/userController.js";
+import dataChequer from "../middleware/dataChequer.js";
+import Validator from "../middleware/validator.js";
+import verifyAccess from "../middleware/verifyAccess.js";
 
 const router = express.Router()
 
