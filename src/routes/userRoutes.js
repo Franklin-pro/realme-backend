@@ -8,7 +8,7 @@ const router = express.Router()
 
 router.post("/",dataChequer.inputempty,dataChequer.emailExist,Validator.userAccount(),Validator.inputValidator,userCotroller.createUser)
 router.get("/",verifyAccess("admin"),userCotroller.getAllUser)
-router.delete("/",userCotroller.deleteAllUser)
+router.delete("/",verifyAccess("admin"),userCotroller.deleteAllUser)
 router.get("/:id",userCotroller.getOneUser)
 router.delete("/:id",userCotroller.deleteOneUser)
 router.patch("/:id",userCotroller.updateUser)
