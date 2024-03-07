@@ -9,7 +9,7 @@ const app = express();
 dotenv.config();
 app.use(cors());
 app.use(bodyParser.json())
-app.use("/api/v1",router)
+app.use("/",router)
 
 
 const port = process.env.PORT
