@@ -8,20 +8,21 @@ import  jwt  from 'jsonwebtoken'
 
 class userCotroller{
 static async createUser(req,res){
+try {
     const{firstName,lastName,email,password,confirmPassword,role}=req.body
-const hashPassword = bcrypt.hashSync(req.body.password,10)
-
-    const users = await User.create({firstName,lastName,email,password:hashPassword,role})
-
-    if(req.body.password!==req.body.confirmPassword){
-        return errorMessage(res,201,`password and confirmPassword not match`)
+    if(req.body.password !== req.body.confirmPassword){
+        return errorMessage(res,401,`password and confirmpassword must be matched`)
     }
+    else{
+        const hashPassword = bcrypt.hashSync(req.body.password,10)
 
-    if(!users){
-        return errorMessage(res,201,`no user created`)
-    }else{
-        return successMessage(res,200,`user created`,users)
+        const user = await User.create({firstName,lastName,email,role,password:hashPassword})
+       return successMessage(res,201,`user created successfully`,user)
     }
+} catch (error) {
+    return errorMessage(res,500,error)
+}
+
 }
 static async getAllUser(req,res){
     const user = await User.find()
