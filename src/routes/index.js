@@ -7,7 +7,7 @@ import blogRoutes from './blogRoutes.js'
 const router = express.Router();
 
 router.use("/user",userRoutes)
-router.use("/message",messageRoutes)
+router.use("/messages",messageRoutes)
 router.use("/blogs",blogRoutes)
 
 export default router

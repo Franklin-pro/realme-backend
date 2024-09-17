@@ -9,7 +9,7 @@ import  jwt  from 'jsonwebtoken'
 class userCotroller{
 static async createUser(req,res){
 try {
-    const{firstName,lastName,email,password,role}=req.body
+    const{userName,email,password,confirmPassword,role}=req.body
     if(!password){
         return errorMessage(res,401,`password is required`)
     }
@@ -19,7 +19,7 @@ try {
     else{
         const hashPassword = bcrypt.hashSync(req.body.password,10)
 
-        const user = await User.create({firstName,lastName,email,role,password:hashPassword})
+        const user = await User.create({userName,email,role,password:hashPassword,confirmPassword})
        return successMessage(res,201,`user created successfully`,user)
     }
 } catch (error) {

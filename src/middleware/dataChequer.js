@@ -4,24 +4,18 @@ import User from "../model/user.js";
 
 class dataChequer{
 static async inputempty(req,res,next){
-    const{firstName,lastName,email,password,confirmPassword}=req.body
+    const{userName,email,password}=req.body
 
-    if(firstName ==""){
+    if(userName ==""){
         return errorMessage(res,201,`provide your firstName correctly`)
-    }else if(lastName==""){
-        return errorMessage(res,200,`provide your lastName correctly`)
     }else if(email==""){
         return errorMessage(res,200,`provide your email correctly`)
 
 }
 else if(password==""){
     return errorMessage(res,200,`provide your password correctly`)
-
 }
-
-else if(confirmPassword==""){
-    return errorMessage(res,200,`provide your lastName correctly`)
-}else{
+else{
     return next()
 }
 }

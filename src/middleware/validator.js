@@ -1,25 +1,25 @@
-import { check,validationResult } from "express-validator";
-import errorMessage from "../itills/errorMessage.js";
 
- class Validator{
-    static inputValidator(req,res,next){
-        const error = validationResult(req)
-        if(!error == error.isEmpty()){
-        error.errors.map((error)=>{
-            return errorMessage(res,201,error.msg)
-        })
-        }else{
-             return next()
+import { check,validationResult } from "express-validator"
+import errorMessage from "../itills/errorMessage.js"
+
+class validator {
+    static inputvalidator(req, res, next) {
+        const errors = validationResult(req);
+        
+        if (!errors.isEmpty()) {
+            const errorMsgs = errors.array().map(err => err.msg);
+            return errorMessage(res, 401, errorMsgs);
         }
+        return next();
     }
-    static userAccount(){
+
+    static userAccountRule() {
         return [
-            check("firstName","write your firstName correctly").trim().isAlpha(),
-            check("lastName","write your lastName correctly").trim().isAlpha(),
-            check("email","write your email correctly @gmail.com").trim().isEmail(),
-            check("password","make strong password start with capital letter mix number,letter and symbols").trim().isStrongPassword(),
-            
-        ]
+            check("userName", "please write your userName correctly").trim().isAlpha(),
+            check("email", "please write your email correctly").trim().isEmail(),
+            check("password", "please write your stronger password").trim().isStrongPassword(),
+        ];
     }
 }
-export default Validator
+export default validator;
+

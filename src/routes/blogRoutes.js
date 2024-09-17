@@ -1,13 +1,16 @@
 import express from 'express';
-import BlogController from '../controller/blogController.js';
-import verifyAccess from '../middleware/verifyAccess.js';
+import upload from '../middleware/membercloud.js';
+import BlogsController from '../controller/blogController.js'
+
+
+
 
 const router = express.Router();
 
-router.post("/",verifyAccess("admin"),BlogController.createBlogs)
-router.get("/",BlogController.getAllBlogs)
-router.get("/:id",BlogController.getOneBlogs)
-router.delete("/",verifyAccess("admin"),BlogController.deleteAllBlogs)
-router.delete("/:id",verifyAccess("admin"),BlogController.deleteOneBlogs)
+router.post('/', upload.single('blogImage'),BlogsController.createBlogs);
+router.get('/',BlogsController.viewBlogs);
+router.get('/:id', BlogsController.viewBlog);
+router.delete('/:id', BlogsController.deleteBlog);
+router.put('/:id',BlogsController.updateBlog);
 
-export default router
+export default router;

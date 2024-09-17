@@ -7,15 +7,22 @@ const messageSchemas = new mongoose.Schema({
     },
     email:{
         type:String,
-        required:true,
-        unique:true
+        required:true
+    },
+    phoneNumber:{
+        type:Number,
+        required:true
+    },
+    campanyName:{
+        type:String,
+        required:true
     },
     message:{
         type:String,
         required:true
     },
+
+
 })
-
-const Messages = mongoose.model("Messages",messageSchemas)
-
-export default Messages
+const Message = mongoose.model('Message',messageSchemas)
+export default Message

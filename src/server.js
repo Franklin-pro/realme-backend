@@ -9,13 +9,11 @@ const app = express();
 dotenv.config();
 app.use(cors());
 app.use(bodyParser.json())
-app.use("/",router)
+app.use("/v1",router)
 
 
 const port = process.env.PORT
 const database = process.env.DATABASE
-
-// ------config port --------
 
 app.listen(port,()=>{
     console.log(`port running on ${port}`)

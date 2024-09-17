@@ -1,55 +1,41 @@
-import express from 'express';
-import Messages from '../model/messages.js';
-import errorMessage from '../itills/errorMessage.js';
+import Message from "../model/messages.js";
+import errormessage from "../itills/errorMessage.js";
 import successMessage from '../itills/successMessage.js';
 
-class messageController{
-    static async createMessage(req,res){
-        const{fullName,email,message}=req.body
+class MessageController {
+    static async sendmessage(req,res){
+        const {fullName,email,phoneNumber,campanyName,message} = req.body
 
-        const messages = await Messages.create({fullName,email,message})
-
-        if(!messages){
-            return errorMessage(res,201,`no message created`)
+        try {
+            const messages = await Message.create({fullName,email,phoneNumber,campanyName,message})
+            if(messages){
+                return successMessage(res,201,`message sent`,messages)
+            }else{
+                return errormessage(res,401,`message not sent`)
+            }
+        } catch (error) {
+            console.error('Error occurred:', error);
+            return errormessage(res, 500, `internal server error`)
+        } 
+    }
+    static async viewAllMessage(req,res){
+        const message= await Message.find();
+        if(message){
+            return successMessage(res,200,`all messages retrived`,message)
         }else{
-            return successMessage(res,200,`message created succefully`,messages)
+            return errormessage(res,400,`no messages found`)
         }
     }
-    static async getAllMessage(req,res){
-        const messages = await Messages.find();
-        if(!messages || messages.length==0){
-            return errorMessage(res,201,`no messages found`)
-        }else{
-            return successMessage(res,200,`messages ${messages.length} retrives `,messages)
-        }
-    }
-    static async getOneMessage(req,res){
-        const id = req.params.id
-        const messages = await Messages.findById(id)
 
-        if(!messages){
-            return errorMessage(res,201,`no message retrived with ${id}`)
-        }else{
-            return successMessage(res,200,`message retrived ${messages.length}`,messages)
-        }
-    }
-    static async deleteAllMessage(req,res){
-        const messages = await Messages.deleteMany();
-        if(!messages){
-            return errorMessage(res,201,`no message deleted`)
-        }else{
-            return successMessage(res,200,`all message deleted`)
-        }
-    }
-    static async deleteOneMessage(req,res){
-        const id = req.params.id
-        const messages = await Messages.findByIdAndDelete(id)
+    static async deleteMessage(req,res){
+        const messageID = req.params.id;
+        const messages = await Message.findByIdAndDelete(messageID)
 
-        if(!messages){
-            return errorMessage(res,201,`no message deleted with ${id}`)
+        if(messages){
+            return successMessage(res,200,`message deleted`,messages)
         }else{
-            return successMessage(res,200,`message deleted`)
+            return errormessage(res,401,`message not deleted`)
         }
     }
 }
-export default messageController
+export default MessageController

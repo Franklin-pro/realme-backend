@@ -1,55 +1,77 @@
-import express from 'express';
-import Blogs from '../model/blogs.js';
-import errorMessage from '../itills/errorMessage.js';
-import successMessage from '../itills/successMessage.js';
+import bcrypt from 'bcrypt'
+import errormessage from '../itills/errorMessage.js'
+import successmessage from '../itills/successMessage.js'
+import cloudinary from '../itills/cloud.js'
+import Blogs from '../model/blogs.js'
+import jwt from 'jsonwebtoken'
 
-class BlogController{
+class BlogsController {
     static async createBlogs(req,res){
-        const{blogTitle,blogImage,blogDescription}=req.body
-
-        const blogs = await Blogs.create({blogTitle,blogImage,blogDescription})
-
-        if(!blogs){
-            return errorMessage(res,401,`no blogs created`)
-        }else{
-            return successMessage(res,200,`blogs created succefully`,blogs)
+        try {
+            const { blogName, blogStatus, blogDescription} = req.body;
+    
+            if (!req.file) {
+                return errormessage(res, 400, 'Please upload an image');
+            }
+    
+            const result = await cloudinary.uploader.upload(req.file.path, {
+                folder: 'blogs'
+            });
+    
+            const blogs = await Blogs.create({
+                blogImage: {
+                    public_id: result.public_id,
+                    url: result.secure_url,
+                },
+                blogName,
+                blogStatus,
+                blogDescription,
+            });
+    
+            if (!blogs) {
+                return errormessage(res, 401, 'Failed to create blogs');
+            }
+    
+            return successmessage(res, 201, 'Blogs created successfully', blogs);
+        } catch (error) {
+            console.error('Error occurred:', error);
+            return errormessage(res, 500, 'Internal server error');
         }
     }
-    static async getAllBlogs(req,res){
-        const blogs = await Blogs.find();
-        if(!blogs || blogs.length==0){
-            return errorMessage(res,401,`no messages found`)
+    static async viewBlogs(req,res){
+        const blogs = await Blogs.find()
+        if(blogs){
+            return successmessage(res,200,`blogs retrived successfully`,blogs)
         }else{
-            return successMessage(res,200,`blogs ${blogs.length} retrives `,blogs)
+            return errormessage(res,400,`blogs not found`)
         }
     }
-    static async getOneBlogs(req,res){
-        const id = req.params.id
-        const blogs = await Blogs.findById(id)
-
-        if(!blogs){
-            return errorMessage(res,401,`no blogs retrived with ${id}`)
+    static async viewBlog(req,res){
+        const blogID = req.params.id
+        const blogs = await Blogs.findById(blogID)
+        if(blogs){
+            return successmessage(res,200,`retrived blog successfully`,blogs)
         }else{
-            return successMessage(res,200,`blogs retrived ${blogs.length}`,blogs)
+            return errormessage(res,401,`no blogs found`)
         }
     }
-    static async deleteAllBlogs(req,res){
-        const blogs = await Blogs.deleteMany();
-        if(!blogs){
-            return errorMessage(res,201,`no blogs deleted`)
+    static async deleteBlog(req,res){
+        const blogID = req.params.id
+        const blogs = await Blogs.findByIdAndDelete(blogID)
+        if(blogs){
+            return errormessage(res,200,`blogs deleted succefully`)
         }else{
-            return successMessage(res,200,`all blogs deleted`)
+            return errormessage(res,400,`no blogs found by ${blogID}`)
         }
     }
-    static async deleteOneBlogs(req,res){
-        const id = req.params.id
-        const blogs = await Blogs.findByIdAndDelete(id)
-
-        if(!blogs){
-            return errorMessage(res,201,`no blogs deleted with ${id}`)
+    static async updateBlog(req,res){
+        const blogID = req.params.id
+        const blogs = await Blogs.findByIdAndUpdate(blogID,req.body,{new:true})
+        if(blogs){
+            return successmessage(res,200,`blogs updated successfully`,blogs)
         }else{
-            return successMessage(res,200,`blogs deleted`)
+            return errormessage(res,400,`no blog updated`)
         }
     }
 }
-export default BlogController
+export default BlogsController
