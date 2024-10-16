@@ -73,5 +73,90 @@ class BlogsController {
             return errormessage(res,400,`no blog updated`)
         }
     }
+
+    static async likeBlog(req, res) {
+        try {
+            const blogID = req.params.id;
+            const userID = req.user.id; 
+
+            const blog = await Blogs.findById(blogID);
+            if (!blog) {
+                return errormessage(res, 404, 'Blog not found');
+            }
+
+            if (blog.likes.includes(userID)) {
+                return errormessage(res, 400, 'You already liked this blog');
+            }
+
+            blog.likes.push(userID);
+            await blog.save();
+
+            return successmessage(res, 200, 'Blog liked successfully', blog);
+        } catch (error) {
+            console.error('Error occurred:', error);
+            return errormessage(res, 500, 'Internal server error');
+        }
+    }
+
+    static async unlikeBlog(req, res) {
+        try {
+            const blogID = req.params.id;
+            const userID = req.user.id;
+
+            const blog = await Blogs.findById(blogID);
+            if (!blog) {
+                return errormessage(res, 404, 'Blog not found');
+            }
+
+            if (!blog.likes.includes(userID)) {
+                return errormessage(res, 400, 'You have not liked this blog');
+            }
+
+            blog.likes = blog.likes.filter(id => id.toString() !== userID);
+            await blog.save();
+
+            return successmessage(res, 200, 'Blog unliked successfully', blog);
+        } catch (error) {
+            console.error('Error occurred:', error);
+            return errormessage(res, 500, 'Internal server error');
+        }
+    }
+    static async commentBlog(req, res) {
+        try {
+            const blogID = req.params.id;
+            const { comment } = req.body;
+            const userID = req.user.id;
+
+            const blog = await Blogs.findById(blogID);
+            if (!blog) {
+                return errormessage(res, 404, 'Blog not found');
+            }
+
+            blog.comments.push({ userId: userID, comment });
+            await blog.save();
+
+            return successmessage(res, 200, 'Comment added successfully', blog);
+        } catch (error) {
+            console.error('Error occurred:', error);
+            return errormessage(res, 500, 'Internal server error');
+        }
+    }
+
+    static async getComments(req, res) {
+        try {
+          const blogID = req.params.id;
+          const blog = await Blogs.findById(blogID).populate('comments.userId', 'username'); // Assuming comments are linked to users
+          
+          if (!blog) {
+            return errormessage(res, 404, 'Blog not found');
+          }
+      
+          return successmessage(res, 200, 'Comments fetched successfully', blog.comments);
+        } catch (error) {
+          console.error('Error occurred:', error);
+          return errormessage(res, 500, 'Internal server error');
+        }
+      }
+      
 }
 export default BlogsController
