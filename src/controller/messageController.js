@@ -4,10 +4,10 @@ import successMessage from '../itills/successMessage.js';
 
 class MessageController {
     static async sendmessage(req,res){
-        const {fullName,email,phoneNumber,campanyName,message} = req.body
+        const {fullName,email,campanyName,message} = req.body
 
         try {
-            const messages = await Message.create({fullName,email,phoneNumber,campanyName,message})
+            const messages = await Message.create({fullName,email,campanyName,message})
             if(messages){
                 return successMessage(res,201,`message sent`,messages)
             }else{
